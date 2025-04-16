@@ -14,6 +14,8 @@ const is_dev_util_1 = require("../shared/utils/is-dev.util");
 const graphql_1 = require("@nestjs/graphql");
 const apollo_1 = require("@nestjs/apollo");
 const graphql_config_1 = require("./config/graphql.config");
+const redis_module_1 = require("./redis/redis.module");
+const account_module_1 = require("../modules/auth/account/account.module");
 let CoreModule = class CoreModule {
 };
 exports.CoreModule = CoreModule;
@@ -26,9 +28,13 @@ exports.CoreModule = CoreModule = __decorate([
             }),
             graphql_1.GraphQLModule.forRootAsync({
                 driver: apollo_1.ApolloDriver,
-                useFactory: graphql_config_1.getGraphQLConfig
+                imports: [config_1.ConfigModule],
+                useFactory: graphql_config_1.getGraphQLConfig,
+                inject: [config_1.ConfigService]
             }),
-            prisma_module_1.PrismaModule
+            prisma_module_1.PrismaModule,
+            redis_module_1.RedisModule,
+            account_module_1.AccountModule
         ]
     })
 ], CoreModule);
